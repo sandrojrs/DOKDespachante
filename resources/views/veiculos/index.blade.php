@@ -11,12 +11,7 @@
             </div>
         </div>
     </div>
-
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
+    <x-alert></x-alert>
 
     <table class="table table-bordered">
         <tr>

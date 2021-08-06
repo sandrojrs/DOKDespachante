@@ -16,11 +16,10 @@ use App\Http\Controllers\VeiculosController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
-
-Route::resource('usuarios', UserController::class);
-Route::resource('veiculos', VeiculosController::class);
-
 Auth::routes();
-
+Route::middleware('auth')->group(function () {
+    Route::resource('usuarios', UserController::class);
+    Route::resource('veiculos', VeiculosController::class);
+});

@@ -11,15 +11,7 @@
         </div>
     </div>
 
-    @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <x-alert></x-alert>
 
     {!! Form::model($veiculos, ['method' => 'PATCH', 'route' => ['veiculos.update', $veiculos->id]]) !!}
     <div class="row">
