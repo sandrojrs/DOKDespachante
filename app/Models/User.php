@@ -22,6 +22,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function veiculos(){
+        return $this->hasMany(veiculos::class);
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
