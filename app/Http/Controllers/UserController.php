@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -20,21 +21,36 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {   
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',               
-        ]);       
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+            'password' => 'required|same:confirm-password', 
+        ]);
 
+        if ($validator->fails()) {
+            return response()
+                ->json([
+                    'status' => 'Failed',
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
+    
         try {
+            $input = $request->all();
+            $input['password'] = Hash::make($input['password']);
             User::create($input);   
-            return redirect()->route('usuarios.index')
-            ->with('success','Usúario criado com sucesso');
-        } catch (\Throwable $th) {
-            return redirect()->route('usuarios.index')
-            ->with('error',$th->getMessage());
+            return response()
+                ->json([
+                    'status' => 'Ok',
+                    'message' => 'Usúario cadastrado com sucesso',
+                    'redirect' => route('usuarios.index')
+                ]);
+        } catch (\Throwable $e) {
+            return response()
+            ->json([
+                'status' => 'Failed',
+                'message' => $e->getMessage(),
+            ]);
         }         
     }
     public function show($id)

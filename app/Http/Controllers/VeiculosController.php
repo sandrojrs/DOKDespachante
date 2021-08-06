@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Veiculos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class VeiculosController extends Controller
 {
@@ -30,22 +31,38 @@ class VeiculosController extends Controller
         $mensagens = [
             'formato_placa_de_veiculo' => 'A placa deve conter o seguinte formato: ABC1D23'
         ];
-        $this->validate($request, [
+
+        $validator = Validator::make($request->all(), [
             'placa' => 'required|formato_placa_de_veiculo|unique:veiculos',
             'modelo' => 'required',
             'cor' => 'required',  
-            'tipo' => 'required',               
-        ],$mensagens);      
+            'tipo' => 'required',  
+        ], $mensagens);
+
+        if ($validator->fails()) {
+            return response()
+                ->json([
+                    'status' => 'Failed',
+                    'message' => $validator->errors()->first(),
+                ]);
+        }
 
         try {
             $input = $request->all();
             $input['user_id'] = Auth::id();
             veiculos::create($input);   
-            return redirect()->route('veiculos.index')
-            ->with('success','Veiculos criado com sucesso');
-        } catch (\Throwable $th) {
-            return redirect()->route('veiculos.index')
-            ->with('error',$th->getMessage());
+            return response()
+                ->json([
+                    'status' => 'Ok',
+                    'message' => 'Veiculo cadastrado com sucesso',
+                    'redirect' => route('veiculos.index')
+                ]);
+        } catch (\Throwable $e) {
+            return response()
+            ->json([
+                'status' => 'Failed',
+                'message' => $e->getMessage(),
+            ]);
         }         
     }
     public function show($id)

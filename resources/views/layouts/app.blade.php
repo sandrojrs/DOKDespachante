@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Laravel 8 User Roles and Permissions Tutorial') }}</title>
+    <title>{{ config('app.name', 'DOKDespachante') }}</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -39,7 +38,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a></li>
+                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Registro') }}</a></li>
                         @else
                             <li><a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a></li>
                             <li><a class="nav-link" href="{{ route('veiculos.index') }}">Veiculos</a></li>
@@ -50,7 +49,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
+                                                            document.getElementById('logout-form').submit();">
                                         {{ __('Sair') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
